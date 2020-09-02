@@ -33,31 +33,29 @@ import retrofit2.Retrofit;
 public class Activity_Splash_Login extends AppCompatActivity {
     private APIService mAPIService;
     private static int TIME_OUT = 2000;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
-        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_splash_login);
-        EditText email=(EditText)findViewById(R.id.email_edit);
-        EditText password=(EditText)findViewById(R.id.password_edit);
-        Button loginBtn=(Button)findViewById(R.id.button_login);
+        EditText email = (EditText) findViewById(R.id.email_edit);
+        EditText password = (EditText) findViewById(R.id.password_edit);
+        Button loginBtn = (Button) findViewById(R.id.button_login);
         SharedPreferences preferences = getSharedPreferences("myPrefs", MODE_PRIVATE);
-        String token = preferences.getString("token","");
-
-
+        String token = preferences.getString("token", "");
         loginBtn.setEnabled(false);
-        if (token!=""){
+        if (token != "") {
             new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                Intent i = new Intent(Activity_Splash_Login.this, benevitsActivity.class);
-                startActivity(i);
+                @Override
+                public void run() {
+                    Intent i = new Intent(Activity_Splash_Login.this, benevitsActivity.class);
+                    startActivity(i);
 
-            }
-        }, TIME_OUT);
-        }
-
+                }
+            }, TIME_OUT);
+        } //verificar si ya está logeado, con el toekn guardado para pasar a la siguiente actividad luego del splash screen
         email.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -66,10 +64,9 @@ public class Activity_Splash_Login extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                if(charSequence.length()!=0 && password.getText().toString().isEmpty()==false){
+                if (charSequence.length() != 0 && password.getText().toString().isEmpty() == false) {
                     loginBtn.setEnabled(true);
-                }
-                else{
+                } else {
                     loginBtn.setEnabled(false);
                 }
             }
@@ -87,10 +84,9 @@ public class Activity_Splash_Login extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                if(charSequence.length()!=0 && email.getText().toString().isEmpty()==false){
+                if (charSequence.length() != 0 && email.getText().toString().isEmpty() == false) {
                     loginBtn.setEnabled(true);
-                }
-                else{
+                } else {
                     loginBtn.setEnabled(false);
                 }
             }
@@ -99,74 +95,64 @@ public class Activity_Splash_Login extends AppCompatActivity {
             public void afterTextChanged(Editable editable) {
 
             }
-        });
+        });//detecta el cambio de texto de los edit text para habilitar el boton
         password.setOnKeyListener(new View.OnKeyListener() {
             @Override
             public boolean onKey(View view, int i, KeyEvent keyEvent) {
                 if ((keyEvent.getAction() == KeyEvent.ACTION_DOWN) &&
-                        (i== KeyEvent.KEYCODE_ENTER)) {
+                        (i == KeyEvent.KEYCODE_ENTER)) {
                     // Perform action on key press
                     //Toast.makeText(Activity_Splash_Login.this, password.getText(), Toast.LENGTH_SHORT).show();
-                    logintmethod(email.getText().toString(),password.getText().toString());
+                    logintmethod(email.getText().toString(), password.getText().toString());
                     return true;
                 }
                 return false;
             }
-        });
+        });// listener de la tecla enter en el caompo de assword para activar las funciones del boton
 
         loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-               logintmethod(email.getText().toString(),password.getText().toString());
+                logintmethod(email.getText().toString(), password.getText().toString());
             }
-        });
+        });//funciones del boton para hacer login
 
 
-}
-
-
-public void getUserToken(){
-
-}
-public void logintmethod(String mailtxt,String passwordtxt) {
-    Retrofit retrofit=retrofitClient.getClient();
-    APIService api=retrofit.create(APIService.class);
-    Call<userClass> call=api.login_infonavit(new userjson(new user(mailtxt,passwordtxt)));
-    call.enqueue(new Callback<userClass>() {
-        @Override
-        public void onResponse(Call<userClass> call, Response<userClass> response) {
-            if(response.raw().code()==401)
-            {   new AlertDialog.Builder(Activity_Splash_Login.this)
-                    .setTitle("Usuario y contraseña incorrectos")
-                    .setMessage("Intenta nuevamente")
-                    .setPositiveButton(android.R.string.ok, null)
-                    .show();            }
-            else if (response.isSuccessful()){{
-                SharedPreferences preferences = getSharedPreferences("myPrefs", MODE_PRIVATE);
-                Log.d("test",response.headers().get("Authorization").toString());
-                //preferences.edit().putString("token", response.headers().get("Authorization").toString()).commit();
-                preferences.edit().putString("token", response.headers().get("Authorization").toString()).commit();
-                Intent i = new Intent(getApplicationContext(),benevitsActivity.class);
-                startActivity(i);
-                    /*SharedPreferences.Editor editor = preferences.edit();
-                    editor.clear();
-                    editor.commit();*/
-            }
-            }
-        }
-
-
-
-        @Override
-        public void onFailure(Call<userClass> call, Throwable t) {
-            Log.d("test",t.toString());
-        }
-    });
-
-}
-    @Override
-    protected void onResume() {
-        super.onResume();
     }
+
+
+    public void logintmethod(String mailtxt, String passwordtxt) {
+        Retrofit retrofit = retrofitClient.getClient();
+        APIService api = retrofit.create(APIService.class);
+        Call<userClass> call = api.login_infonavit(new userjson(new user(mailtxt, passwordtxt)));
+        call.enqueue(new Callback<userClass>() {
+            @Override
+            public void onResponse(Call<userClass> call, Response<userClass> response) {
+                if (response.raw().code() == 401) {
+                    new AlertDialog.Builder(Activity_Splash_Login.this)
+                            .setTitle("Usuario y contraseña incorrectos")
+                            .setMessage("Intenta nuevamente")
+                            .setPositiveButton(android.R.string.ok, null)
+                            .show();
+                } else if (response.isSuccessful()) {
+                    {
+                        SharedPreferences preferences = getSharedPreferences("myPrefs", MODE_PRIVATE);
+                        Log.d("test", response.headers().get("Authorization").toString());
+                        preferences.edit().putString("token", response.headers().get("Authorization").toString()).commit();
+                        Intent i = new Intent(getApplicationContext(), benevitsActivity.class);
+                        startActivity(i);
+                    }
+                }
+            }
+
+
+            @Override
+            public void onFailure(Call<userClass> call, Throwable t) {
+                Log.d("test", t.toString());
+            }
+        });// ejecución asincrona de la base de datos
+
+    }
+
 }
 
