@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:fresco="http://schemas.android.com/apk/res-auto"
+    android:layout_width="250dp"
+    android:layout_height="270dp"
+    android:layout_margin="5dp"
+    android:background="#FFFFFF"
+    android:elevation="5dp"
+    android:orientation="vertical"
+    android:padding="5dp"
+    fresco:cardCornerRadius="40dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/image_bkg"
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:background="@color/colorPrimary"
+
+                android:scaleType="center" />
+            <ImageView
+                android:id="@+id/logo_benevit"
+                android:layout_width="match_parent"
+                android:layout_height="70dp"
+                android:src="@drawable/devlyn"
+                android:layout_gravity="center_vertical"/>
+
+
+
+
+
+        </FrameLayout>
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginLeft="25dp"
+    android:layout_marginRight="25dp"
+    >
+
+
+    <TextView
+        android:id="@+id/description"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:text="15% de descuento en todos los lentes y lentes de contacto."
+        android:textAlignment="center"
+        fresco:layout_constraintLeft_toLeftOf="parent"
+        fresco:layout_constraintRight_toRightOf="parent"
+        fresco:layout_constraintTop_toTopOf="parent " />
+
+    <TextView
+        android:id="@+id/region"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:layout_marginTop="55dp"
+        android:text="Todo México"
+        android:textStyle="bold"
+        fresco:layout_constraintLeft_toLeftOf="parent"
+        fresco:layout_constraintRight_toRightOf="parent"
+
+        fresco:layout_constraintBottom_toTopOf="@id/expire_date"  />
+
+        <TextView
+            android:id="@+id/expire_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:layout_marginTop="10dp"
+            android:text="Vence en: 157 dias"
+            android:layout_marginBottom="10dp"
+            fresco:layout_constraintBottom_toBottomOf="parent"
+            fresco:layout_constraintLeft_toLeftOf="parent"
+            fresco:layout_constraintRight_toRightOf="parent"/>
+</androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>
