@@ -20,4 +20,4 @@ public class walletViewModel extends ViewModel {
     }
 
 
-}
+}//intento para implementación view model
