@@ -24,8 +24,6 @@ public class dataRepository {
             public void onResponse(Call<ArrayList<walletClass>> call, Response<ArrayList<walletClass>> response) {
                 Log.d("test","no tas registrao chao");
                 wallets.addAll(response.body());
-                //adaptador.setData(wallets);
-                //recycler.setAdapter(adaptador);
             }
 
             @Override
